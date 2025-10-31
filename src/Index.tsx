@@ -433,9 +433,14 @@ const MapView = ({ clusters, onBack, processMapData }) => {
         maxZoom: 13
       }).addTo(map);
 
+      const minVal = Math.min(...valList);
+      const maxVal = Math.max(...valList);
+      const range = maxVal - minVal;
+
       const heatData = latList.map((lat, i) => {
-        const normalizedVal = (valList[i] - Math.min(...valList)) / 
-          (Math.max(...valList) - Math.min(...valList) + 1e-10);
+        const normalizedVal = range > 0 
+          ? (valList[i] - minVal) / range
+          : 1.0;
         return [lat, lonList[i], normalizedVal];
       });
 
